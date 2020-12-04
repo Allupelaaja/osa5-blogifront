@@ -56,6 +56,32 @@ const App = () => {
     )
   }
 
+  const handleUpdate = async (blogToUpdate) => {
+
+    try {
+      const updatedBlog = blogToUpdate
+      updatedBlog.likes++
+      const newBlog = await blogService.update(blogToUpdate.id, blogToUpdate)
+
+      let newBlogs = [...blogs]
+      newBlogs.splice(newBlogs.indexOf(blogToUpdate), newBlog)
+      setBlogs(newBlogs)
+
+      console.log('updated blog', updatedBlog.title)
+
+      setNotificationMessage('blog ' + updatedBlog.title + ' updated')
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setErrorMessage('error updating blog')
+      console.log(exception)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleCreate = async (createdBlog) => {
 
     try {
@@ -173,7 +199,7 @@ const App = () => {
 
       <div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} updateBlog={handleUpdate} />
         )}
       </div>
     </div>
