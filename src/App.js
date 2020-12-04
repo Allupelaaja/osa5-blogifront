@@ -5,6 +5,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css';
 import Togglable from './components/Togglable'
+import PropTypes from 'prop-types'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -47,6 +48,10 @@ const App = () => {
     )
   }
 
+  Notification.propTypes = {
+    message: PropTypes.string
+  }
+
   const Error = ({ message }) => {
     if (message === null) {
       return null
@@ -57,6 +62,10 @@ const App = () => {
         {message}
       </div>
     )
+  }
+
+  Error.propTypes = {
+    message: PropTypes.string
   }
 
   const handleUpdate = async (blogToUpdate) => {
@@ -186,7 +195,7 @@ const App = () => {
       <div>
         <h2>log in to application</h2>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -195,7 +204,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"

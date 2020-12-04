@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   const [visible, setVisible] = useState(false)
@@ -24,7 +25,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
 
   const startDelete = (event) => {
     event.preventDefault()
-    if (window.confirm("Remove blog " + blog.title + " by " + blog.author)) { 
+    if (window.confirm("Remove blog " + blog.title + " by " + blog.author)) {
       deleteBlog(blog)
     }
   }
@@ -49,6 +50,13 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
       </div>
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  updateBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 export default Blog
