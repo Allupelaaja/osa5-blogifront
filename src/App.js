@@ -85,6 +85,30 @@ const App = () => {
     }
   }
 
+  const handleDelete = async (blogToDelete) => {
+
+    try {
+      await blogService.remove(blogToDelete.id)
+
+      let newBlogs = [...blogs]
+      newBlogs.splice(newBlogs.indexOf(blogToDelete), 1)
+      setBlogs(newBlogs)
+
+      console.log('deleted blog', blogToDelete.title)
+
+      setNotificationMessage('blog ' + blogToDelete.title + ' deleted')
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setErrorMessage('error deleting blog')
+      console.log(exception)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleCreate = async (createdBlog) => {
 
     try {
@@ -202,7 +226,7 @@ const App = () => {
 
       <div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} updateBlog={handleUpdate} />
+          <Blog key={blog.id} blog={blog} updateBlog={handleUpdate} deleteBlog={handleDelete} user={user}/>
         )}
       </div>
     </div>
