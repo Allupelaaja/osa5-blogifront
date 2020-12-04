@@ -1,20 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const createForm = ({
-    handleCreate,
-    handleTitleChange,
-    handleAuthorChange,
-    handleUrlChange,
-    title,
-    author,
-    url
-}) => (
-        <form onSubmit={handleCreate}>
+const CreateForm = ({ createBlog }) => {
+    const [title, setTitle] = useState('')
+    const [author, setAuthor] = useState('')
+    const [url, setUrl] = useState('')
+
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value)
+    }
+
+    const handleAuthorChange = (event) => {
+        setAuthor(event.target.value)
+    }
+
+    const handleUrlChange = (event) => {
+        setUrl(event.target.value)
+    }
+
+
+    const addBlog = (event) => {
+        event.preventDefault()
+        createBlog({
+            title: title,
+            author: author,
+            url: url,
+        })
+        setTitle('');
+        setAuthor('')
+        setUrl('')
+    }
+
+    return (
+        <form onSubmit={addBlog}>
             <div>
                 <h2>create new</h2>
                 <div>
                     title:
-          <input
+              <input
                         value={title}
                         name="title"
                         onChange={handleTitleChange}
@@ -22,14 +44,14 @@ const createForm = ({
                 </div>
                 <div>
                     author:
-          <input
+              <input
                         value={author}
                         name="author"
                         onChange={handleAuthorChange}
                     /></div>
                 <div>
                     url:
-          <input
+              <input
                         value={url}
                         name="url"
                         onChange={handleUrlChange}
@@ -38,5 +60,6 @@ const createForm = ({
             </div>
         </form>
     )
+}
 
-export default createForm
+export default CreateForm

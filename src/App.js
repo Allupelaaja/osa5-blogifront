@@ -12,11 +12,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
-
   const blogFromRef = useRef()
 
   useEffect(() => {
@@ -60,17 +56,10 @@ const App = () => {
     )
   }
 
-  const handleCreate = async (event) => {
-    event.preventDefault()
+  const handleCreate = async (createdBlog) => {
 
     try {
-      const createdBlog = {
-        title: title,
-        author: author,
-        url: url,
-        user: user
-      }
-
+      createdBlog.user = user
       const newBlog = await blogService.create(createdBlog)
 
       let newBlogs = [...blogs]
@@ -79,14 +68,10 @@ const App = () => {
 
       console.log('created new blog')
 
-      setNotificationMessage('a new blog' + title + ' added')
+      setNotificationMessage('a new blog ' + newBlog.title + ' added')
       setTimeout(() => {
         setNotificationMessage(null)
       }, 5000)
-
-      setTitle('')
-      setAuthor('')
-      setUrl('')
 
       blogFromRef.current.toggleVisibility()
     } catch (exception) {
@@ -181,17 +166,9 @@ const App = () => {
         </div>
       }
 
-      <br/>
+      <br />
       <Togglable buttonLabel="new blog" ref={blogFromRef}>
-        <CreateForm
-          title={title}
-          author={author}
-          url={url}
-          handleCreate={handleCreate}
-          handleTitleChange={({ target }) => setTitle(target.value)}
-          handleAuthorChange={({ target }) => setAuthor(target.value)}
-          handleUrlChange={({ target }) => setUrl(target.value)}
-        />
+        <CreateForm createBlog={handleCreate} />
       </Togglable>
 
       <div>
