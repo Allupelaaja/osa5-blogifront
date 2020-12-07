@@ -1,65 +1,87 @@
 /* eslint-disable no-undef */
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
-const dummy = () => {
-  return null
-}
+describe('testing blog component:', () => {
 
-const user = {
-  username: "testuser"
-}
+    const dummy = () => {
+        return null
+    }
 
-const blog = {
-  title: "title for testing blog",
-  author: "testing author",
-  url: "testurl",
-  user: user,
-  likes: 51
-}
+    const user = {
+        username: "testuser"
+    }
 
-test('title is rendered', () => {
+    const blog = {
+        title: "title for testing blog",
+        author: "testing author",
+        url: "testurl",
+        user: user,
+        likes: 51
+    }
 
-  const component = render(
-    <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-  )
+    test('title is rendered', () => {
 
-  expect(component.container).toHaveTextContent(
-    'title for testing blog'
-  )
-})
+        const component = render(
+            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
+        )
 
-test('author is rendered', () => {
+        expect(component.container).toHaveTextContent(
+            'title for testing blog'
+        )
+    })
 
-  const component = render(
-    <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-  )
+    test('author is rendered', () => {
 
-  expect(component.container).toHaveTextContent(
-    'testing author'
-  )
-})
+        const component = render(
+            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
+        )
 
-test('url is not rendered', () => {
+        expect(component.container).toHaveTextContent(
+            'testing author'
+        )
+    })
 
-  const component = render(
-    <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-  )
+    test('url is not rendered', () => {
 
-  expect(component.container).not.toHaveTextContent(
-    'testurl'
-  )
-})
+        const component = render(
+            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
+        )
 
-test('like amount is not rendered', () => {
+        expect(component.container).not.toHaveTextContent(
+            'testurl'
+        )
+    })
 
-  const component = render(
-    <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-  )
+    test('like amount is not rendered', () => {
 
-  expect(component.container).not.toHaveTextContent(
-    '51'
-  )
+        const component = render(
+            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
+        )
+
+        expect(component.container).not.toHaveTextContent(
+            '51'
+        )
+    })
+
+    test('url and likes are rendered after "view" button is pressed', () => {
+
+        const component = render(
+            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
+        )
+
+        const button = component.getByText('view')
+        fireEvent.click(button)
+
+        expect(component.container).toHaveTextContent(
+            'testurl'
+        )
+
+        expect(component.container).toHaveTextContent(
+            '51'
+        )
+    })
+
 })
