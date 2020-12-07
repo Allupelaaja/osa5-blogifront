@@ -72,8 +72,6 @@ describe('Blog app', function () {
       cy.get('#url').type('test url')
       cy.get('#create').click()
 
-      cy.visit('http://localhost:3000')
-
       cy.contains('view').click()
       cy.contains('remove').click()
       cy.contains('blog test title deleted')
@@ -98,8 +96,6 @@ describe('Blog app', function () {
       cy.get('#url').type('test url3')
       cy.get('#create').click()
 
-      cy.visit('http://localhost:3000')
-
       cy.contains('test author1').contains('view').click()
       cy.contains('test author2').contains('view').click()
       cy.contains('test author3').contains('view').click()
@@ -112,6 +108,8 @@ describe('Blog app', function () {
       cy.contains('test url3').contains('likes 0').contains('like').click()
       cy.contains('test url3').contains('likes 1').contains('like').click()
       cy.contains('test url3').contains('likes 2').contains('like').click()
+
+      cy.wait(1)
 
       cy.get('div#blogInList').then( blogs => {
         cy.wrap(blogs[0]).contains('test author3')
