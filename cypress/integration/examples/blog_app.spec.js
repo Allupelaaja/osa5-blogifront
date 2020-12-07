@@ -6,7 +6,7 @@ describe('Blog app', function() {
     const user = {
       name: 'Testi tyyppi',
       username: 'tester',
-      password: 'salasana'
+      password: 'salasana',
     }
     cy.request('POST', 'http://localhost:3001/api/users/', user)
   })
@@ -36,7 +36,7 @@ describe('Blog app', function() {
     })
   })
 
-  describe('When logged in', function() {
+  describe.only('When logged in', function() {
     beforeEach(function() {
       cy.visit('http://localhost:3000')
       cy.get('#username').type('tester')
@@ -50,6 +50,7 @@ describe('Blog app', function() {
       cy.get('#author').type('test author')
       cy.get('#url').type('test url')
       cy.get('#create').click()
+      cy.visit('http://localhost:3000')
       cy.contains('test title test author')
     })
 
@@ -59,11 +60,24 @@ describe('Blog app', function() {
       cy.get('#author').type('test author')
       cy.get('#url').type('test url')
       cy.get('#create').click()
-      cy.contains('test title test author')
+      cy.visit('http://localhost:3000')
 
       cy.contains('view').click()
       cy.contains('like').click()
       cy.contains('likes 1')
+    })
+
+    it.only('A blog can be removed', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('test title')
+      cy.get('#author').type('test author')
+      cy.get('#url').type('test url')
+      cy.get('#create').click()
+      cy.visit('http://localhost:3000')
+
+      cy.contains('view').click()
+      cy.contains('remove').click()
+      cy.contains('blog test title deleted')
     })
   })
 })
