@@ -1,5 +1,3 @@
-const { element } = require("prop-types")
-
 /* eslint-disable no-undef */
 describe('Blog app', function () {
   beforeEach(function () {
@@ -10,7 +8,13 @@ describe('Blog app', function () {
       username: 'tester',
       password: 'salasana',
     }
+    const user2 = {
+      name: 'Testi tyyppi2',
+      username: 'tester2',
+      password: 'salasana2',
+    }
     cy.request('POST', 'http://localhost:3001/api/users/', user)
+    cy.request('POST', 'http://localhost:3001/api/users/', user2)
   })
 
   it('Login form is shown', function () {
@@ -38,7 +42,7 @@ describe('Blog app', function () {
     })
   })
 
-  describe.only('When logged in', function () {
+  describe('When logged in', function () {
     beforeEach(function () {
       cy.visit('http://localhost:3000')
       cy.get('#username').type('tester')
@@ -52,7 +56,6 @@ describe('Blog app', function () {
       cy.get('#author').type('test author')
       cy.get('#url').type('test url')
       cy.get('#create').click()
-      cy.visit('http://localhost:3000')
       cy.contains('test title test author')
     })
 
@@ -62,7 +65,6 @@ describe('Blog app', function () {
       cy.get('#author').type('test author')
       cy.get('#url').type('test url')
       cy.get('#create').click()
-      cy.visit('http://localhost:3000')
 
       cy.contains('view').click()
       cy.contains('like').click()
@@ -75,6 +77,7 @@ describe('Blog app', function () {
       cy.get('#author').type('test author')
       cy.get('#url').type('test url')
       cy.get('#create').click()
+
       cy.visit('http://localhost:3000')
 
       cy.contains('view').click()
@@ -82,26 +85,25 @@ describe('Blog app', function () {
       cy.contains('blog test title deleted')
     })
 
-    it.only('Blogs are sorted in order by amount of likes', function () {
-      cy.contains('new blog').click()
+    it('Blogs are sorted in order by amount of likes', function () {
+      cy.contains('create new blog').click()
       cy.get('#title').type('test title1')
       cy.get('#author').type('test author1')
       cy.get('#url').type('test url1')
       cy.get('#create').click()
-      cy.visit('http://localhost:3000')
 
-      cy.contains('new blog').click()
+      cy.contains('create new blog').click()
       cy.get('#title').type('test title2')
       cy.get('#author').type('test author2')
       cy.get('#url').type('test url2')
       cy.get('#create').click()
-      cy.visit('http://localhost:3000')
 
-      cy.contains('new blog').click()
+      cy.contains('create new blog').click()
       cy.get('#title').type('test title3')
       cy.get('#author').type('test author3')
       cy.get('#url').type('test url3')
       cy.get('#create').click()
+
       cy.visit('http://localhost:3000')
 
       cy.contains('test author1').contains('view').click()
@@ -116,11 +118,6 @@ describe('Blog app', function () {
       cy.contains('test url3').contains('likes 0').contains('like').click()
       cy.contains('test url3').contains('likes 1').contains('like').click()
       cy.contains('test url3').contains('likes 2').contains('like').click()
-      cy.visit('http://localhost:3000')
-
-      cy.contains('test author1').contains('view').click()
-      cy.contains('test author2').contains('view').click()
-      cy.contains('test author3').contains('view').click()
 
       cy.get('div#blogInList').then( blogs => {
         cy.wrap(blogs[0]).contains('test author3')

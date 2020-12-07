@@ -77,6 +77,11 @@ const App = () => {
 
       let newBlogs = [...blogs]
       newBlogs.splice(newBlogs.indexOf(blogToUpdate), newBlog)
+
+      newBlogs.sort(function (a, b) {
+        return b.likes - a.likes;
+      });
+
       setBlogs(newBlogs)
 
       console.log('updated blog', updatedBlog.title)
@@ -161,8 +166,6 @@ const App = () => {
       setUsername('')
       setPassword('')
 
-      console.log('userin tiedot:', user)
-
       setNotificationMessage('login successful')
       setTimeout(() => {
         setNotificationMessage(null)
@@ -230,7 +233,7 @@ const App = () => {
       }
 
       <br />
-      <Togglable buttonLabel="new blog" ref={blogFromRef}>
+      <Togglable buttonLabel="create new blog" ref={blogFromRef}>
         <CreateForm createBlog={handleCreate} />
       </Togglable>
 
