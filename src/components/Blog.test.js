@@ -6,82 +6,86 @@ import Blog from './Blog'
 
 describe('testing blog component:', () => {
 
-    const dummy = () => {
-        return null
+  let user, blog, component
+
+  const dummy = () => {
+    return null
+  }
+
+  const mockHandler  = jest.fn()
+
+  beforeEach(() => {
+    user = {
+      username: "testuser"
     }
 
-    const user = {
-        username: "testuser"
+    blog = {
+      title: "title for testing blog",
+      author: "testing author",
+      url: "testurl",
+      user: user,
+      likes: 51
     }
 
-    const blog = {
-        title: "title for testing blog",
-        author: "testing author",
-        url: "testurl",
-        user: user,
-        likes: 51
-    }
+    component = render(
+      <Blog blog={blog} user={user} updateBlog={mockHandler} deleteBlog={dummy} />
+    )
+  })
 
-    test('title is rendered', () => {
+  test('title is rendered', () => {
 
-        const component = render(
-            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-        )
+    expect(component.container).toHaveTextContent(
+      'title for testing blog'
+    )
+  })
 
-        expect(component.container).toHaveTextContent(
-            'title for testing blog'
-        )
-    })
+  test('author is rendered', () => {
 
-    test('author is rendered', () => {
+    expect(component.container).toHaveTextContent(
+      'testing author'
+    )
+  })
 
-        const component = render(
-            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-        )
+  test('url is not rendered', () => {
 
-        expect(component.container).toHaveTextContent(
-            'testing author'
-        )
-    })
+    expect(component.container).not.toHaveTextContent(
+      'testurl'
+    )
+  })
 
-    test('url is not rendered', () => {
+  test('like amount is not rendered', () => {
 
-        const component = render(
-            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-        )
+    expect(component.container).not.toHaveTextContent(
+      '51'
+    )
+  })
 
-        expect(component.container).not.toHaveTextContent(
-            'testurl'
-        )
-    })
+  test('url and likes are rendered after "view" button is pressed', () => {
 
-    test('like amount is not rendered', () => {
+    const button = component.getByText('view')
+    fireEvent.click(button)
 
-        const component = render(
-            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-        )
+    expect(component.container).toHaveTextContent(
+      'testurl'
+    )
 
-        expect(component.container).not.toHaveTextContent(
-            '51'
-        )
-    })
+    expect(component.container).toHaveTextContent(
+      '51'
+    )
+  })
 
-    test('url and likes are rendered after "view" button is pressed', () => {
+  test('when like is clicked twice, mockHandler is called twice', () => {
 
-        const component = render(
-            <Blog blog={blog} user={user} updateBlog={dummy} deleteBlog={dummy} />
-        )
+    const buttonView = component.getByText('view')
 
-        const button = component.getByText('view')
-        fireEvent.click(button)
+    fireEvent.click(buttonView)
 
-        expect(component.container).toHaveTextContent(
-            'testurl'
-        )
+    const buttonLike = component.getByText('like')
 
-        expect(component.container).toHaveTextContent(
-            '51'
-        )
-    })
+    fireEvent.click(buttonLike)
+    fireEvent.click(buttonLike)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  })
 
 })
