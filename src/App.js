@@ -128,12 +128,12 @@ const App = () => {
     try {
       createdBlog.user = user
       const newBlog = await blogService.create(createdBlog)
+      newBlog.user = user
+      console.log("newBlog",newBlog)
 
-      const result = await blogService.getAll()
-      result.sort(function (a, b) {
-        return b.likes - a.likes;
-      });
-      setBlogs(result)
+      let newBlogs = [...blogs]
+      newBlogs.push(newBlog)
+      setBlogs(newBlogs)
 
       console.log('created new blog')
 
