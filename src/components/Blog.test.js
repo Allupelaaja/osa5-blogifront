@@ -87,5 +87,4 @@ describe('testing blog component:', () => {
 
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
-
 })
