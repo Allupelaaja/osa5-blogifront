@@ -8,13 +8,7 @@ describe('Blog app', function () {
       username: 'tester',
       password: 'salasana',
     }
-    const user2 = {
-      name: 'Testi tyyppi2',
-      username: 'tester2',
-      password: 'salasana2',
-    }
     cy.request('POST', 'http://localhost:3001/api/users/', user)
-    cy.request('POST', 'http://localhost:3001/api/users/', user2)
   })
 
   it('Login form is shown', function () {
