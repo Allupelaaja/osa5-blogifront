@@ -196,6 +196,7 @@ const App = () => {
         <h2>log in to application</h2>
         username
         <input
+          id="username"
           type="text"
           value={username}
           name="Username"
@@ -205,6 +206,7 @@ const App = () => {
       <div>
         password
         <input
+          id="password"
           type="password"
           value={password}
           name="Password"
